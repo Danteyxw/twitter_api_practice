@@ -19,6 +19,7 @@ GEM
     backports (3.6.6)
     buftok (0.2.0)
     builder (3.2.2)
+    byebug (6.0.2)
     daemons (1.2.3)
     diff-lcs (1.2.5)
     domain_name (0.5.24)
@@ -109,6 +110,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   activesupport
+  byebug
   faker
   pg
   rake

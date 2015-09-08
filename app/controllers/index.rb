@@ -3,14 +3,24 @@ get '/' do
   erb :index
 end
 
-get '/:username' do
-  @tweets = TWITTER_CLIENT.search("from:#{params[:username]}", result_type: 'recent').take(2)
+get '/:screen_name' do
+  @user = TwitterUser.find_by(screen_name: params[:screen_name])
 
-  # tweet.user.screen_name
-  # tweet.text
+  if @user.nil?
+    user = TWITTER_CLIENT.user(params[:screen_name])
+
+    @user = TwitterUser.create(screen_name: user.screen_name, display_name: user.name)
+  end
+
+  if @user.tweets.size == 0
+    @user.fetch_tweets!
+  end
+
+  @tweets = @user.tweets.limit(10)
+ 
   erb :tweets
 end
 
 post '/search' do
-  redirect "/#{params[:username]}"
+  redirect "/#{params[:screen_name]}"
 end
