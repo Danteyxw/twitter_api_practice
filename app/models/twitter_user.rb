@@ -8,4 +8,13 @@ class TwitterUser < ActiveRecord::Base
   		self.tweets.create(text: tweet.text)
   	end
   end
+
+  def tweets_stale?
+  	user = TWITTER_CLIENT.user(self.screen_name)
+
+  	if (user.tweets_count != self.tweets_count)
+  		return true
+  	end
+  	false
+  end
 end

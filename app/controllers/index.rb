@@ -6,13 +6,16 @@ end
 get '/:screen_name' do
   @user = TwitterUser.find_by(screen_name: params[:screen_name])
 
-  if @user.nil?
+  if (@user.nil?)
     user = TWITTER_CLIENT.user(params[:screen_name])
 
-    @user = TwitterUser.create(screen_name: user.screen_name, display_name: user.name)
+    @user = TwitterUser.create(screen_name: user.screen_name, display_name: user.name, tweets_count: user.tweets_count)
   end
 
-  if @user.tweets.size == 0
+  if (@user.tweets.size == 0)
+    @user.fetch_tweets!
+  elsif (@user.tweets_stale?)
+    @user.tweets.each {|tweet| tweet.delete}
     @user.fetch_tweets!
   end
 
