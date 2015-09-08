@@ -1,0 +1,7 @@
+<div class="container">
+	<h1><%= @tweets.first.user.screen_name %></h1>
+
+	<% @tweets.each do |tweet| %>
+		<p class="tweet"><%= tweet.text %></p>
+	<% end %>
+</div>

@@ -27,7 +27,7 @@ require 'yaml'
 # Some helper constants for path-centric logic
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 APP_NAME = APP_ROOT.basename.to_s
-APP_KEY = YAML.load_file('keys.yml')
+APP_KEY = YAML.load_file('config/keys.yml')
 
 # Set up the controllers and helpers
 Dir[APP_ROOT.join('app', 'controllers', '*.rb')].each { |file| require file }
@@ -35,3 +35,11 @@ Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }
 
 # Set up the database and models
 require APP_ROOT.join('config', 'database')
+
+# Set up Twitter API
+TWITTER_CLIENT = Twitter::REST::Client.new do |config|
+	config.consumer_key = APP_KEY["consumer_key_public"]
+	config.consumer_secret = APP_KEY["consumer_key_private"]
+	config.access_token = APP_KEY["access_token_public"]
+	config.access_token_secret = APP_KEY["access_token_private"]
+end
