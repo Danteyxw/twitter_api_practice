@@ -12,6 +12,12 @@ get '/:screen_name' do
     @user = TwitterUser.create(screen_name: user.screen_name, display_name: user.name, tweets_count: user.tweets_count)
   end
 
+  erb :tweets
+end
+
+post '/fetch' do
+  @user = TwitterUser.find_by(screen_name: params["screen_name"])
+
   if (@user.tweets.size == 0)
     @user.fetch_tweets!
   elsif (@user.tweets_stale?)
@@ -20,8 +26,8 @@ get '/:screen_name' do
   end
 
   @tweets = @user.tweets.limit(10)
- 
-  erb :tweets
+
+  erb :tweets_list, layout: false
 end
 
 post '/search' do

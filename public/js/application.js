@@ -1,7 +1,18 @@
-$(document).ready(function() {
-  // This is called after the document has loaded in its entirety
-  // This guarantees that any elements we bind to will exist on the page
-  // when we try to bind to them
+function fetch() {
+	if ($(".container").attr("id") == "tweets.erb") {
+		$(".loading").show();
+		$.ajax({
+			url: '/fetch',
+			method: 'post',
+			data: {screen_name: $("h1").text()}
+		}).done(function(data) {
+			$(".loading").hide();
 
-  // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+			$("#tweets").append(data)
+		});
+	}
+}
+
+$(document).ready(function() {
+	fetch();
 });

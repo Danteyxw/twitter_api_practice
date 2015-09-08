@@ -1,8 +1,10 @@
-<div class="container">
+<div class="container" id="tweets.erb">
 	<h1><%= @user.screen_name %></h1>
 	<p><%= @user.display_name %></p>
 
-	<% @tweets.each do |tweet| %>
-		<p class="tweet"><%= tweet.text %></p>
-	<% end %>
+	<div id="wait">
+		<img class="loading" src="images/ajax-loader.gif">
+	</div>
+
+	<div id="tweets"></div>
 </div>
